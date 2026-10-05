@@ -111,10 +111,9 @@ public class BillingAndReporting implements Billable {
         Date entry = vehicle.getEntryTime();
         Date exit = new Date(entry.getTime() + simulatedDurationMillis);
 
-        double hours = simulatedDurationMillis / (1000.0 * 60 * 60);
-        double billedHours = Math.max(1.0, Math.ceil(hours * 2.0) / 2.0);
         double rate = vehicle.getBaseHourlyRate();
-        double total = billedHours * rate;
+        double billedHours = Math.max(1.0, Math.ceil((simulatedDurationMillis / (1000.0 * 60 * 60)) * 2.0) / 2.0);
+        double total = calculateFee(simulatedDurationMillis, rate);
 
         payment.processPayment(total, "TXN-" + System.currentTimeMillis() % 10000);
 
